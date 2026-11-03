@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f7edf0">
+<meta name="description" content="Vitals — a calm, beautiful MBBS timetable and attendance companion.">
+<link rel="manifest" href="./manifest.json">
+<title>Vitals — your clinical companion</title>
+<style>
+
+:root{--bg:#f8f3f0;--paper:#fffdfa;--ink:#343b36;--muted:#7e887f;--line:#e9e3dc;--accent:#b96d7f;--accent2:#e9b9c7;--soft:#f6e8ec;--green:#6e8c70;--green-soft:#e6eee4;--rust:#b96d4e;--rust-soft:#f5e6dc;--yellow:#d6ad4d;--yellow-soft:#f8f0d9;--blue:#6b94a8;--blue-soft:#e4eff3;--red:#b95b5b;--red-soft:#f7e5e2;--shadow:0 12px 35px rgba(65,53,45,.07);--radius:22px}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px 'DM Sans',system-ui,sans-serif;min-height:100vh}button,input,select,textarea{font:inherit}button{cursor:pointer;border:0} .app{max-width:1180px;margin:auto;min-height:100vh;padding:24px 28px 100px}
+.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}.brand{display:flex;align-items:center;gap:12px}.brandmark{width:42px;height:42px;border-radius:15px;background:linear-gradient(145deg,#f1cbd5,#dce8d8);display:grid;place-items:center;color:#815767;font-size:22px}.brand h1{font:26px 'DM Serif Display',serif;margin:0;letter-spacing:.2px}.brand small{display:block;color:var(--muted);font-size:11px;margin-top:1px;letter-spacing:.8px;text-transform:uppercase}.topright{display:flex;align-items:center;gap:10px}.datepill,.iconbtn{background:var(--paper);border:1px solid var(--line);border-radius:99px;padding:10px 14px;color:var(--muted)}.iconbtn{width:40px;height:40px;padding:0;display:grid;place-items:center;font-size:17px}
+.nav{display:flex;gap:7px;padding:6px;background:#eee8e2;border-radius:18px;width:max-content;margin-bottom:24px}.nav button{background:transparent;color:#7c817b;padding:11px 18px;border-radius:13px;font-weight:600}.nav button.active{background:var(--paper);color:var(--ink);box-shadow:0 3px 12px #46372a12}.nav .ico{margin-right:7px}
+h2{font:30px 'DM Serif Display',serif;margin:0 0 5px}h3{font-size:15px;margin:0;font-weight:700}.sub{color:var(--muted);margin:0 0 22px}.grid{display:grid;gap:16px}.overview-grid{grid-template-columns:1.25fr .75fr}.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}.hero{background:linear-gradient(120deg,#f4dfe5 0%,#f8eee5 52%,#e4ecdf 100%);border:0;min-height:176px;position:relative;overflow:hidden}.hero:after{content:"✿";position:absolute;right:24px;bottom:-32px;font-size:160px;color:#ffffff70;transform:rotate(-18deg)}.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:1.4px;color:#8a6972;font-weight:700}.hero h2{font-size:34px;margin:10px 0 8px;max-width:420px}.hero p{color:#746b67;max-width:440px;margin:0;line-height:1.55}.hero .date{display:inline-block;margin-top:17px;font-size:12px;color:#866f70}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.stat{background:#fff;border:1px solid var(--line);border-radius:17px;padding:15px}.stat .num{font:28px 'DM Serif Display',serif}.stat small{display:block;color:var(--muted);font-size:11px;margin-top:4px}.progress{height:7px;background:#eeeae4;border-radius:20px;overflow:hidden;margin-top:10px}.progress span{display:block;height:100%;background:var(--green);border-radius:20px}.sectionhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}.textbtn{background:transparent;color:var(--accent);font-weight:700;padding:5px}.session{display:grid;grid-template-columns:78px 1fr auto;gap:12px;align-items:center;padding:13px 0;border-bottom:1px solid var(--line)}.session:last-child{border-bottom:0}.time{font-size:12px;color:var(--muted);font-weight:600}.session strong{display:block;font-size:13px}.session small{color:var(--muted);font-size:11px}.pills{display:flex;gap:5px}.pill{border:1px solid var(--line);background:white;color:#7d827c;border-radius:9px;padding:7px 9px;font-weight:700;font-size:11px}.pill.picked-P{background:var(--green-soft);border-color:#c7d8c4;color:#4d7650}.pill.picked-A{background:var(--red-soft);border-color:#eac7c2;color:#a34d4d}.pill.picked-C{background:var(--blue-soft);border-color:#c5dce5;color:#527d91}.quote{background:var(--blue-soft);border:0}.quote blockquote{font:21px 'DM Serif Display',serif;line-height:1.35;margin:13px 0;color:#456a7a}.quote small{color:#698b98}.minirow{display:flex;gap:8px;flex-wrap:wrap}.tag{font-size:11px;padding:6px 9px;border-radius:99px;background:var(--soft);color:#936274;font-weight:700}
+.weekhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}.weeknav{display:flex;gap:6px}.weeknav button{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:8px 12px}.week{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}.day{background:var(--paper);border:1px solid var(--line);border-radius:17px;padding:12px 8px;min-height:112px;text-align:left;color:var(--ink);position:relative}.day.selected{outline:2px solid var(--accent);background:var(--soft)}.day .dow{font-size:10px;text-transform:uppercase;color:var(--muted);letter-spacing:.7px}.day .dnum{font:23px 'DM Serif Display',serif;margin:4px 0 9px}.abbrs{display:flex;flex-wrap:wrap;gap:4px}.abbr{font-size:9px;font-weight:700;padding:4px 5px;border-radius:6px;background:var(--blue-soft);color:#4f7d90}.daystatus{position:absolute;right:9px;top:10px;font-size:12px}.day-detail{margin-top:16px}.statusline{display:flex;gap:8px;align-items:center;color:var(--muted);font-size:12px}.dot{width:8px;height:8px;border-radius:50%;display:inline-block}.subject-grid{grid-template-columns:repeat(3,1fr)}.subject-tile{border:1px solid var(--line);border-radius:19px;background:var(--paper);padding:17px;text-align:left;color:var(--ink);transition:.15s}.subject-tile:hover{transform:translateY(-2px);box-shadow:var(--shadow)}.subject-tile .symbol{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;font-weight:800;margin-bottom:12px;background:var(--soft);color:var(--accent)}.subject-tile strong{display:block;font-size:14px}.subject-tile small{color:var(--muted);font-size:11px}.subject-tile .percent{font:27px 'DM Serif Display',serif;margin-top:12px}.detailhead{display:flex;gap:12px;align-items:center;margin-bottom:18px}.back{border:1px solid var(--line);background:var(--paper);border-radius:12px;padding:9px 12px}.category{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:15px 0;border-bottom:1px solid var(--line)}.category:last-child{border:0}.category .pct{font:24px 'DM Serif Display',serif}.category small{color:var(--muted)}.metric-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}.metric{background:#f8f5f0;padding:9px 12px;border-radius:12px;font-size:11px;color:#6d756e}.metric b{color:var(--ink)}
+.settings-grid{grid-template-columns:220px 1fr}.settingnav{display:grid;gap:6px;align-content:start}.settingnav button{text-align:left;background:transparent;padding:11px 13px;border-radius:11px;color:var(--muted)}.settingnav button.active{background:var(--soft);color:var(--accent);font-weight:700}.field{display:grid;gap:6px;margin:12px 0}.field label{font-size:11px;color:var(--muted);font-weight:700}.field input,.field select,.field textarea{border:1px solid var(--line);background:#fffdfa;border-radius:11px;padding:11px;color:var(--ink);width:100%}.btn{background:var(--accent);color:white;border-radius:12px;padding:11px 15px;font-weight:700}.btn.secondary{background:#f1ece6;color:var(--ink)}.btn.danger{background:var(--red-soft);color:#9b4b4b}.row{display:flex;gap:9px;align-items:center;flex-wrap:wrap}.theme-list{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.theme-choice{border:2px solid transparent;background:#fff;border-radius:14px;padding:11px;text-align:left}.theme-choice.active{border-color:var(--accent)}.swatches{display:flex;gap:4px;margin-bottom:8px}.swatches i{height:22px;flex:1;border-radius:6px}.empty{color:var(--muted);padding:18px;text-align:center;background:#faf8f4;border-radius:14px;font-size:12px}
+.bottomnav{display:none}
+body[data-theme="spring"]{--accent:#b96d7f;--soft:#f6e8ec;--green:#6e8c70;--bg:#f8f3f0}
+body[data-theme="summer"]{--accent:#b96d4e;--soft:#f5e6dc;--bg:#faf4e9;--green:#6e8c70}
+body[data-theme="autumn"]{--accent:#a9663f;--soft:#f5e7d5;--bg:#f5eee5;--green:#75815b}
+body[data-theme="ocean"]{--accent:#54869d;--soft:#e4eff3;--bg:#eff5f5;--green:#668b7d}
+body[data-theme="winter"]{--accent:#718aa8;--soft:#e9eef6;--bg:#f2f4f8;--green:#688c82}
+body.dark{--bg:#1f2826;--paper:#293330;--ink:#edf0e9;--muted:#a5b0a8;--line:#3a4842;--shadow:0 10px 28px #0003;--soft:#49363f}body.dark .stat,body.dark .field input,body.dark .field select,body.dark .field textarea,body.dark .pill,body.dark .theme-choice{background:#303c37;color:var(--ink);border-color:var(--line)}body.dark .nav{background:#303a36}body.dark .nav button.active{background:#45534c;color:white}body.dark .metric,body.dark .empty{background:#303b36;color:#c1cbc3}body.dark .day{background:var(--paper)}body.dark .hero{filter:saturate(.8)}
+@media(max-width:760px){.app{padding:18px 15px 95px}.top{margin-bottom:18px}.brand h1{font-size:23px}.datepill{display:none}.nav{display:none}.bottomnav{position:fixed;bottom:0;left:0;right:0;z-index:10;display:flex;justify-content:space-around;background:var(--paper);border-top:1px solid var(--line);padding:8px 5px calc(8px + env(safe-area-inset-bottom));box-shadow:0 -8px 25px #4433220d}.bottomnav button{background:transparent;color:var(--muted);font-size:10px;display:grid;gap:3px;justify-items:center;padding:4px 10px}.bottomnav button.active{color:var(--accent);font-weight:700}.bottomnav span{font-size:19px}.overview-grid{grid-template-columns:1fr}.subject-grid{grid-template-columns:repeat(2,1fr)}.week{gap:5px}.day{padding:9px 5px;min-height:100px}.day .dnum{font-size:20px}.abbr{font-size:8px;padding:3px 4px}.settings-grid{grid-template-columns:1fr}.settingnav{display:flex;overflow:auto}.settingnav button{white-space:nowrap}.stats{gap:7px}.stat{padding:12px}.stat .num{font-size:24px}.hero h2{font-size:29px}.session{grid-template-columns:67px 1fr auto;gap:8px}.pill{padding:7px 7px}.theme-list{grid-template-columns:repeat(2,1fr)}}
+
+/* Vitals visual direction: clean, compact and lightweight */
+:root{--radius:15px;--shadow:0 2px 10px rgba(45,55,48,.035)}
+body{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;font-size:14px}
+.app{max-width:1120px;padding-top:20px}
+.brandmark{width:36px;height:36px;border-radius:11px;background:var(--soft);color:var(--accent);font-size:17px}
+.brand h1{font-family:Georgia,serif;font-size:25px}
+h2{font-family:Georgia,serif;font-size:27px}
+.card,.stat,.subject-tile,.day{box-shadow:none;border-radius:14px}
+.card{padding:17px}
+.hero{background:var(--paper);border:1px solid var(--line);min-height:0}
+.hero:after{content:'✿';right:18px;bottom:8px;font-size:25px;color:var(--accent);opacity:.28;transform:none}
+.hero .eyebrow{color:var(--accent)}
+.hero h2{font-family:Georgia,serif;font-size:29px}
+.hero p{color:var(--muted)}
+.nav{border-radius:13px;background:transparent;padding:0;border-bottom:1px solid var(--line);width:100%;gap:4px}
+.nav button{border-radius:10px;padding:10px 14px}
+.nav button.active{box-shadow:none;background:var(--soft);color:var(--accent)}
+.session{padding:11px 0}
+.pill{border-radius:8px;padding:7px 10px}
+.day{min-height:98px;padding:10px 7px;border-radius:12px}
+.day.selected{outline:1px solid var(--accent)}
+.subject-tile{padding:15px}
+.subject-tile:hover{transform:none;box-shadow:0 3px 12px rgba(45,55,48,.06)}
+.subject-tile .symbol{width:30px;height:30px;border-radius:9px}
+.theme-list{grid-template-columns:repeat(2,minmax(0,1fr))}
+.theme-choice{border:1px solid var(--line);border-radius:12px}
+.theme-choice.active{border:2px solid var(--accent)}
+body[data-theme="spring"]{--accent:#bd8293;--soft:#f8edf0;--bg:#fbf8f7}
+body[data-theme="summer"]{--accent:#b88722;--soft:#fbf2d9;--bg:#fcfaf3}
+body[data-theme="autumn"]{--accent:#a9663f;--soft:#f5e7d5;--bg:#f8f4ee}
+body[data-theme="ocean"]{--accent:#54869d;--soft:#e4eff3;--bg:#f5f9f9}
+body[data-theme="winter"]{--accent:#718aa8;--soft:#e9eef6;--bg:#f6f7fa}
+body[data-theme="summer"] .hero:after{content:'✳';color:#c99a2d}
+body[data-theme="spring"] .hero:after{content:'✿';color:#c58a9c}
+@media(max-width:760px){.app{padding:14px 13px 90px}.card{padding:15px}.hero:after{right:13px;bottom:5px}.week{gap:5px}.day{min-height:88px}.abbr{font-size:8px;padding:3px 4px}.stats{gap:7px}.stat{padding:11px}.stat .num{font-size:24px}.theme-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+</style>
+</head>
+<body data-theme="spring">
+<div class="app">
+<header class="top">
+ <div class="brand"><div class="brandmark">✿</div><div><h1>vitals</h1><small>your clinical companion</small></div></div>
+ <div class="topright"><span class="datepill" id="todayLabel"></span><button class="iconbtn" id="quickTheme" title="Change theme">☼</button></div>
+</header>
+<nav class="nav" id="topNav"></nav>
+<main id="view"></main>
+</div>
+<nav class="bottomnav" id="bottomNav"></nav>
+<input type="file" id="csvFile" accept=".csv,text/csv" hidden>
+<input type="file" id="backupFile" accept=".json,application/json" hidden>
+<script>
+const $=s=>document.querySelector(s), todayISO=()=>new Date().toLocaleDateString('en-CA');
+const fmtDate=(iso,opts={weekday:'long',day:'numeric',month:'long'})=>new Date(iso+'T12:00:00').toLocaleDateString('en-IN',opts);
+const timeFmt=t=>t||'';
+const uid=()=>Math.random().toString(36).slice(2,10);
+const defaultData=()=>({
+ subjects:[
+  {id:'gm',name:'General Medicine',abbr:'GM',color:'blue',categories:[{name:'Lecture',required:75},{name:'Posting',required:80},{name:'Seminar',required:75}]},
+  {id:'gs',name:'General Surgery',abbr:'GS',color:'rust',categories:[{name:'Lecture',required:75},{name:'Posting',required:80}]},
+  {id:'obg',name:'Obstetrics & Gynaecology',abbr:'OBG',color:'pink',categories:[{name:'Lecture',required:75},{name:'Posting',required:80}]},
+  {id:'peds',name:'Paediatrics',abbr:'PED',color:'green',categories:[{name:'Lecture',required:75},{name:'Posting',required:80},{name:'Elective',required:75}]},
+  {id:'ortho',name:'Orthopaedics',abbr:'ORTHO',color:'yellow',categories:[{name:'Lecture',required:75},{name:'Posting',required:80}]}
+ ],
+ sessions:[],holidays:[],imports:[],weekly:[
+  {day:1,start:'09:00',end:'11:30',subjectId:'gm',category:'Posting',title:'Clinical posting'},
+  {day:1,start:'11:30',end:'12:20',subjectId:'gm',category:'Lecture',title:'General Medicine'},
+  {day:1,start:'12:20',end:'13:00',subjectId:'gs',category:'Lecture',title:'General Surgery'},
+  {day:1,start:'14:00',end:'15:00',subjectId:'obg',category:'Lecture',title:'OBG'},
+  {day:2,start:'09:00',end:'11:30',subjectId:'gs',category:'Posting',title:'Clinical posting'},
+  {day:2,start:'11:30',end:'12:20',subjectId:'peds',category:'Lecture',title:'Paediatrics'},
+  {day:2,start:'12:20',end:'13:00',subjectId:'gm',category:'Lecture',title:'General Medicine'},
+  {day:2,start:'14:00',end:'15:00',subjectId:'ortho',category:'Lecture',title:'Orthopaedics'},
+  {day:3,start:'09:00',end:'11:30',subjectId:'obg',category:'Posting',title:'Clinical posting'},
+  {day:3,start:'11:30',end:'12:20',subjectId:'gs',category:'Lecture',title:'General Surgery'},
+  {day:3,start:'12:20',end:'13:00',subjectId:'peds',category:'Lecture',title:'Paediatrics'},
+  {day:3,start:'14:00',end:'15:00',subjectId:'gm',category:'Lecture',title:'General Medicine'},
+  {day:4,start:'09:00',end:'11:30',subjectId:'peds',category:'Posting',title:'Clinical posting'},
+  {day:4,start:'11:30',end:'12:20',subjectId:'gm',category:'Lecture',title:'General Medicine'},
+  {day:4,start:'12:20',end:'13:00',subjectId:'obg',category:'Lecture',title:'OBG'},
+  {day:4,start:'14:00',end:'15:00',subjectId:'gs',category:'Lecture',title:'General Surgery'},
+  {day:5,start:'09:00',end:'11:30',subjectId:'ortho',category:'Posting',title:'Clinical posting'},
+  {day:5,start:'11:30',end:'12:20',subjectId:'peds',category:'Lecture',title:'Paediatrics'},
+  {day:5,start:'12:20',end:'13:00',subjectId:'gm',category:'Lecture',title:'General Medicine'},
+  {day:5,start:'14:00',end:'15:00',subjectId:'obg',category:'Lecture',title:'OBG'},
+  {day:6,start:'09:00',end:'11:30',subjectId:'gm',category:'Posting',title:'Clinical posting'},
+  {day:6,start:'11:30',end:'12:20',subjectId:'gs',category:'Lecture',title:'General Surgery'},
+  {day:6,start:'12:20',end:'13:00',subjectId:'peds',category:'Lecture',title:'Paediatrics'}
+ ],settings:{theme:'spring',dark:false,font:'DM Sans'}
+});
+let data=load(),tab='overview',selectedDate=todayISO(),weekOffset=0,subjectOpen=null,setting='appearance';
+function load(){try{return JSON.parse(localStorage.getItem('vitals-data'))||defaultData()}catch(e){return defaultData()}}
+function save(){localStorage.setItem('vitals-data',JSON.stringify(data));}
+function subject(id){return data.subjects.find(s=>s.id===id)||{name:'Unassigned',abbr:'—',categories:[]}}
+function getDaySessions(date){return data.sessions.filter(s=>s.date===date).sort((a,b)=>a.start.localeCompare(b.start))}
+function ensureDay(date){let day=new Date(date+'T12:00:00').getDay();if(day===0)return;let exists=getDaySessions(date);if(exists.length)return;data.weekly.filter(x=>x.day===day).forEach(x=>data.sessions.push({id:uid(),date,start:x.start,end:x.end,subjectId:x.subjectId,category:x.category,title:x.title,status:'',source:'weekly'}));save()}
+function ensureRange(start,end){let d=new Date(start+'T12:00:00'),last=new Date(end+'T12:00:00');while(d<=last){ensureDay(d.toLocaleDateString('en-CA'));d.setDate(d.getDate()+1)}}
+function dayStatus(date){let ss=getDaySessions(date).filter(s=>s.status!=='C');if(!ss.length)return '';if(ss.every(s=>s.status==='P'))return 'P';if(ss.some(s=>s.status==='A'))return 'A';if(ss.some(s=>!s.status))return 'pending';return 'C'}
+function stats(subjectId,cat){let arr=data.sessions.filter(s=>s.subjectId===subjectId&&(!cat||s.category===cat)&&s.status!=='C'&&s.status);let p=arr.filter(s=>s.status==='P').length,a=arr.filter(s=>s.status==='A').length,n=p+a,req=cat?subject(subjectId).categories.find(c=>c.name===cat)?.required||75:Math.min(...(subject(subjectId).categories.map(c=>c.required).length?subject(subjectId).categories.map(c=>c.required):[75]));let pct=n?100*p/n:0;let bunk=Math.max(0,Math.floor((p-req*n/100)/(req/100)));let need=pct>=req?0:Math.ceil((req*n-p)/(1-req/100));return {p,a,n,pct,req,bunk,need}}
+const navs=[['overview','⌂','Overview'],['calendar','▦','Calendar'],['attendance','◔','Attendance'],['settings','⚙','Settings']];
+function nav(){let markup=navs.map(([id,ic,l])=>`<button data-tab="${id}" class="${tab===id?'active':''}"><span class="ico">${ic}</span>${l}</button>`).join('');$('#topNav').innerHTML=markup;$('#bottomNav').innerHTML=navs.map(([id,ic,l])=>`<button data-tab="${id}" class="${tab===id?'active':''}"><span>${ic}</span>${l}</button>`).join('');document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{tab=b.dataset.tab;subjectOpen=null;render()})}
+function markSession(id,status){let s=data.sessions.find(x=>x.id===id);if(s){s.status=s.status===status?'':status;save();render()}}
+function controls(s){return `<div class="pills">${['P','A','C'].map(x=>`<button class="pill ${s.status===x?'picked-'+x:''}" data-mark="${s.id}" data-status="${x}">${x}</button>`).join('')}</div>`}
+function sessionRows(arr){if(!arr.length)return `<div class="empty">No classes scheduled for this day.</div>`;return arr.map(s=>`<div class="session"><div class="time">${s.start}<br><span>– ${s.end}</span></div><div><strong>${esc(subject(s.subjectId).name)} · ${esc(s.category||'Class')}</strong><small>${esc(s.title||'Scheduled session')}${s.topic?' · '+esc(s.topic):''}</small></div>${controls(s)}</div>`).join('')}
+function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function overview(){let today=todayISO();ensureRange(today,today);let ss=getDaySessions(today),done=ss.filter(s=>s.status).length,all=ss.length,overall=data.sessions.filter(s=>s.status==='P'||s.status==='A'),p=overall.filter(s=>s.status==='P').length,pct=overall.length?Math.round(p/overall.length*100):0;let next=ss.find(s=>!s.status);return `<div class="grid overview-grid"><div class="grid"><section class="card hero"><div class="eyebrow">A little progress, every day</div><h2>Good ${new Date().getHours()<12?'morning':new Date().getHours()<17?'afternoon':'evening'}.</h2><p>Your clinical life, a little more organised. One class at a time — you've got this.</p><span class="date">${fmtDate(today,{weekday:'long',day:'numeric',month:'long',year:'numeric'})}</span></section><div class="stats"><div class="stat"><div class="num">${pct}%</div><small>Overall attendance</small><div class="progress"><span style="width:${pct}%"></span></div></div><div class="stat"><div class="num">${done}/${all}</div><small>Today's marked</small><div class="progress"><span style="width:${all?done/all*100:0}%"></span></div></div><div class="stat"><div class="num">${ss.filter(s=>s.status==='P').length}</div><small>Present today</small><div class="progress"><span style="width:${all?ss.filter(s=>s.status==='P').length/all*100:0}%"></span></div></div></div><section class="card"><div class="sectionhead"><div><h3>Today's timetable</h3><small class="sub" style="margin:3px 0 0">${fmtDate(today)}</small></div><button class="textbtn" data-goto="calendar">Full calendar →</button></div>${sessionRows(ss)}</section></div><div class="grid"><section class="card quote"><div class="eyebrow">A note to self</div><blockquote>“Small steps every day add up to big changes.”</blockquote><small>— your reminder to keep going</small></section><section class="card"><div class="sectionhead"><h3>At a glance</h3><span class="tag">${next?'Next up':'All caught up'}</span></div>${next?`<div class="eyebrow">UP NEXT · ${next.start}</div><h3 style="font-size:20px;margin:7px 0">${esc(subject(next.subjectId).name)}</h3><p class="sub" style="margin:0">${esc(next.category)} · ${next.start}–${next.end}</p>`:`<div class="empty">No pending sessions today. Take a breath 🌿</div>`}<div class="minirow" style="margin-top:17px"><span class="tag">${data.subjects.length} subjects</span><span class="tag">${data.holidays.length} holidays saved</span></div></section><section class="card"><div class="sectionhead"><h3>Little wins</h3></div><p class="sub" style="margin:0">Mark each session as you go. Cancelled classes won't affect your attendance, and unmarked classes stay pending.</p></section></div></div>`}
+function calendar(){let base=new Date();base.setDate(base.getDate()-((base.getDay()+6)%7)+weekOffset*7);let start=base.toLocaleDateString('en-CA'),endDate=new Date(base);endDate.setDate(base.getDate()+6);let end=endDate.toLocaleDateString('en-CA');ensureRange(start,end);let days=Array.from({length:7},(_,i)=>{let d=new Date(base);d.setDate(base.getDate()+i);return d.toLocaleDateString('en-CA')});let cards=days.map(d=>{let ss=getDaySessions(d),st=dayStatus(d),isPast=d<todayISO();let ab=[...new Set(ss.map(s=>subject(s.subjectId).abbr))];return `<button class="day ${selectedDate===d?'selected':''}" data-day="${d}"><span class="daystatus">${isPast?(st==='P'?'🟢':st==='A'?'🔴':st==='pending'?'🟡':''):''}</span><div class="dow">${new Date(d+'T12:00:00').toLocaleDateString('en-IN',{weekday:'short'})}</div><div class="dnum">${new Date(d+'T12:00:00').getDate()}</div><div class="abbrs">${ab.map(a=>`<span class="abbr">${esc(a)}</span>`).join('')}</div></button>`}).join('');let day=getDaySessions(selectedDate);let status=dayStatus(selectedDate);return `<div class="weekhead"><div><h2>Calendar</h2><p class="sub" style="margin:4px 0 0">Your week, at a glance</p></div><div class="weeknav"><button data-week="-1">‹</button><button data-week="0">Today</button><button data-week="1">›</button></div></div><div class="card"><div class="week">${cards}</div><div class="statusline" style="margin-top:13px"><span><i class="dot" style="background:var(--green)"></i> All present</span><span><i class="dot" style="background:var(--red)"></i> Absence</span><span><i class="dot" style="background:var(--yellow)"></i> Pending</span></div></div><section class="card day-detail"><div class="sectionhead"><div><h3>${fmtDate(selectedDate)}</h3><small class="sub" style="margin:3px 0 0">${day.length} scheduled session${day.length===1?'':'s'}</small></div><span class="tag">${status==='P'?'All present':status==='A'?'Absence recorded':status==='pending'?'Needs marking':'No classes'}</span></div>${sessionRows(day)}</section>`}
+function attendance(){if(subjectOpen){let s=subject(subjectOpen);let cats=s.categories||[];return `<div class="detailhead"><button class="back" data-back>← Subjects</button><div><h2>${esc(s.name)}</h2><p class="sub" style="margin:2px 0 0">Attendance breakdown by class type</p></div></div><div class="stats" style="margin-bottom:17px">${(()=>{let st=stats(s.id);return `<div class="stat"><div class="num">${Math.round(st.pct)}%</div><small>Overall attendance</small></div><div class="stat"><div class="num">${st.p}/${st.n}</div><small>Attended / held</small></div><div class="stat"><div class="num">${st.bunk}</div><small>Safe additional absences*</small></div>`})()}</div><section class="card"><div class="sectionhead"><h3>Class categories</h3><button class="textbtn" data-addcat="${s.id}">＋ Add type</button></div>${cats.map(c=>{let st=stats(s.id,c.name);return `<div class="category"><div><strong>${esc(c.name)}</strong><br><small>${st.p} present · ${st.a} absent · ${st.n} counted · Required ${c.required}%</small><div class="progress" style="max-width:300px"><span style="width:${Math.min(100,st.pct)}%;background:${st.pct>=c.required?'var(--green)':'var(--red)'}"></span></div><div class="metric-row"><span class="metric"><b>${st.pct>=c.required?st.bunk:0}</b> more absences allowed</span><span class="metric"><b>${st.need}</b> classes to attend to recover</span></div></div><div class="pct">${st.n?Math.round(st.pct)+'%':'—'}</div></div>`}).join('')||'<div class="empty">No class types yet. Add a type to start tracking.</div>'}</section><p class="sub" style="margin-top:12px">*Safe absences are calculated using the current held classes and required percentage. Cancelled and pending sessions are excluded.</p><section class="card"><div class="sectionhead"><h3>Recent sessions</h3></div>${sessionRows(data.sessions.filter(x=>x.subjectId===s.id).sort((a,b)=>b.date.localeCompare(a.date)).slice(0,10))}</section>`}
+return `<div class="sectionhead"><div><h2>Attendance</h2><p class="sub" style="margin:4px 0 0">Every subject, every percentage, in one place.</p></div><button class="btn" data-addsubject>＋ Subject</button></div><div class="grid subject-grid">${data.subjects.map(s=>{let st=stats(s.id);return `<button class="subject-tile" data-subject="${s.id}"><div class="symbol">${esc(s.abbr.slice(0,2))}</div><strong>${esc(s.name)}</strong><small>${s.categories.length} class types</small><div class="percent">${st.n?Math.round(st.pct)+'%':'—'}</div><div class="progress"><span style="width:${st.pct}%"></span></div><small>${st.p} present · ${st.a} absent</small></button>`}).join('')}</div>`}
+function settings(){let content='';if(setting==='appearance')content=`<h3>Seasonal palettes</h3><p class="sub">Choose the mood that feels right today.</p><div class="theme-list">${[['spring','Spring · blush & petals',['#e8c3ce','#f5e8e9','#9eae91']],['summer','Summer · sunflower',['#f0c64e','#f8e8a8','#78934f']],['autumn','Autumn · warm earth',['#b96d4e','#d6ad4d','#87916d']],['ocean','Ocean · coastal blue',['#6b9eb2','#c2dfe0','#477a91']],['winter','Winter · misty blue',['#8ea4c0','#d8e0ed','#a4b9bb']]].map(([id,name,colors])=>`<button class="theme-choice ${data.settings.theme===id?'active':''}" data-theme="${id}"><div class="swatches">${colors.map(c=>`<i style="background:${c}"></i>`).join('')}</div><strong>${name}</strong></button>`).join('')}</div><div class="field"><label>Appearance</label><select id="darkMode"><option value="no" ${!data.settings.dark?'selected':''}>Light</option><option value="yes" ${data.settings.dark?'selected':''}>Dark</option></select></div><div class="field"><label>Font</label><select id="font"><option>DM Sans</option><option>Georgia</option><option>Arial</option></select></div>`;
+if(setting==='subjects')content=`<div class="sectionhead"><div><h3>Subjects & class types</h3><p class="sub" style="margin:4px 0 0">Set required attendance separately for each type.</p></div><button class="btn" data-addsubject>＋ Add subject</button></div>${data.subjects.map(s=>`<div class="category"><div><strong>${esc(s.name)}</strong><br><small>${s.categories.map(c=>esc(c.name)+' '+c.required+'%').join(' · ')}</small></div><button class="textbtn" data-editsubject="${s.id}">Edit</button></div>`).join('')}`;
+if(setting==='timetable')content=`<div class="sectionhead"><div><h3>Weekly timetable</h3><p class="sub" style="margin:4px 0 0">Recurring sessions create the day-by-day schedule.</p></div><button class="btn" data-addweekly>＋ Add session</button></div><div class="row" style="margin-bottom:12px"><button class="btn secondary" data-generate>Generate next 90 days</button><button class="btn secondary" data-import>Import CSV</button></div>${data.weekly.map((w,i)=>`<div class="category"><div><strong>${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][w.day]} · ${esc(subject(w.subjectId).name)}</strong><br><small>${w.start}–${w.end} · ${esc(w.category)}</small></div><button class="textbtn" data-delweekly="${i}">Remove</button></div>`).join('')}`;
+if(setting==='holidays')content=`<div class="sectionhead"><div><h3>Holidays & days off</h3><p class="sub" style="margin:4px 0 0">Cancelled days never count as absences.</p></div><button class="btn" data-addholiday>＋ Add holiday</button></div>${data.holidays.map(h=>`<div class="category"><div><strong>${esc(h.name)}</strong><br><small>${h.start}${h.end&&h.end!==h.start?' → '+h.end:''}</small></div><button class="textbtn" data-delholiday="${h.id}">Remove</button></div>`).join('')||'<div class="empty">No holidays added yet.</div>'}<p class="sub">Sunday is treated as a weekly off by default.</p>`;
+if(setting==='imports')content=`<div class="sectionhead"><div><h3>CSV import & history</h3><p class="sub" style="margin:4px 0 0">Import classes with subject and class type mapping.</p></div><button class="btn" data-import>Import CSV</button></div><div class="empty">Your CSV should have columns such as Date, Day, Time, Type, Subject, Topic, Staff and Roll Numbers. A preview and mapping step should happen before saving.</div>${data.imports.map(b=>`<div class="category"><div><strong>${esc(b.filename)}</strong><br><small>${b.count} sessions · ${b.date}</small></div><button class="textbtn" data-undoimport="${b.id}">Undo</button></div>`).join('')||'<p class="sub">No import batches yet.</p>'}`;
+if(setting==='data')content=`<h3>Data & privacy</h3><p class="sub">Your records stay on this device unless you export them.</p><div class="row"><button class="btn" data-export>Export backup</button><button class="btn secondary" data-backupimport>Restore backup</button></div><p class="sub" style="margin-top:15px">Keep a backup before changing devices or clearing browser data.</p>`;
+return `<div><h2>Settings</h2><p class="sub">Make Vitals feel like yours.</p></div><div class="grid settings-grid"><div class="settingnav">${[['appearance','✿','Appearance'],['subjects','◈','Subjects'],['timetable','▦','Timetable'],['holidays','☼','Holidays'],['imports','⇧','Imports & history'],['data','◇','Data & privacy']].map(([id,ic,l])=>`<button data-setting="${id}" class="${setting===id?'active':''}">${ic} &nbsp;${l}</button>`).join('')}</div><section class="card">${content}</section></div>`}
+function render(){document.body.dataset.theme=data.settings.theme||'spring';document.body.classList.toggle('dark',!!data.settings.dark);$('#todayLabel').textContent=fmtDate(todayISO(),{day:'numeric',month:'short',year:'numeric'});nav();$('#view').innerHTML=tab==='overview'?overview():tab==='calendar'?calendar():tab==='attendance'?attendance():settings();bind()}
+function bind(){
+document.querySelectorAll('[data-mark]').forEach(b=>b.onclick=()=>markSession(b.dataset.mark,b.dataset.status));
+document.querySelectorAll('[data-goto]').forEach(b=>b.onclick=()=>{tab=b.dataset.goto;render()});
+document.querySelectorAll('[data-day]').forEach(b=>b.onclick=()=>{selectedDate=b.dataset.day;render()});
+document.querySelectorAll('[data-week]').forEach(b=>b.onclick=()=>{weekOffset+=Number(b.dataset.week);if(b.dataset.week==='0')weekOffset=0;render()});
+document.querySelectorAll('[data-subject]').forEach(b=>b.onclick=()=>{subjectOpen=b.dataset.subject;render()});
+document.querySelectorAll('[data-back]').forEach(b=>b.onclick=()=>{subjectOpen=null;render()});
+document.querySelectorAll('[data-setting]').forEach(b=>b.onclick=()=>{setting=b.dataset.setting;render()});
+document.querySelectorAll('[data-theme]').forEach(b=>b.onclick=()=>{data.settings.theme=b.dataset.theme;save();render()});
+$('#darkMode')?.addEventListener('change',e=>{data.settings.dark=e.target.value==='yes';save();render()});
+$('#font')?.addEventListener('change',e=>{document.body.style.fontFamily=e.target.value==='Georgia'?'Georgia,serif':e.target.value+',sans-serif';data.settings.font=e.target.value;save()});
+document.querySelectorAll('[data-delweekly]').forEach(b=>b.onclick=()=>{data.weekly.splice(+b.dataset.delweekly,1);save();render()});
+document.querySelectorAll('[data-delholiday]').forEach(b=>b.onclick=()=>{data.holidays=data.holidays.filter(h=>h.id!==b.dataset.delholiday);save();render()});
+document.querySelectorAll('[data-undoimport]').forEach(b=>b.onclick=()=>undoImport(b.dataset.undoimport));
+document.querySelectorAll('[data-export]').forEach(b=>b.onclick=exportBackup);
+document.querySelectorAll('[data-backupimport]').forEach(b=>b.onclick=()=>$('#backupFile').click());
+document.querySelectorAll('[data-import]').forEach(b=>b.onclick=()=>$('#csvFile').click());
+document.querySelectorAll('[data-generate]').forEach(b=>b.onclick=()=>{let d=new Date();d.setDate(d.getDate()+1);let e=new Date();e.setDate(e.getDate()+90);ensureRange(d.toLocaleDateString('en-CA'),e.toLocaleDateString('en-CA'));alert('Scheduled sessions generated for the next 90 days.');render()});
+document.querySelectorAll('[data-addsubject]').forEach(b=>b.onclick=addSubject);
+document.querySelectorAll('[data-addcat]').forEach(b=>b.onclick=()=>addCategory(b.dataset.addcat));
+document.querySelectorAll('[data-editsubject]').forEach(b=>b.onclick=()=>editSubject(b.dataset.editsubject));
+document.querySelectorAll('[data-addweekly]').forEach(b=>b.onclick=addWeekly);
+document.querySelectorAll('[data-addholiday]').forEach(b=>b.onclick=addHoliday);
+}
+function addSubject(){let name=prompt('Subject name?');if(!name)return;let abbr=prompt('Short calendar label (e.g. GM, GS, OBG)?',name.split(/\s+/).map(x=>x[0]).join('').toUpperCase().slice(0,5))||name.slice(0,3).toUpperCase();let s={id:uid(),name,abbr,categories:[{name:'Lecture',required:75},{name:'Posting',required:80}]};data.subjects.push(s);save();render()}
+function editSubject(id){let s=subject(id),n=prompt('Subject name',s.name);if(n)s.name=n;let a=prompt('Calendar abbreviation',s.abbr);if(a)s.abbr=a.toUpperCase();save();render()}
+function addCategory(id){let name=prompt('Class type (Lecture, Posting, Elective, Practical...)');if(!name)return;let req=Number(prompt('Required attendance %',75))||75;subject(id).categories.push({name,required:req});save();render()}
+function addWeekly(){let days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];let day=Number(prompt('Day of week: 0 Sunday, 1 Monday ... 6 Saturday',1));let sub=data.subjects.find(s=>s.name===prompt('Enter exact subject name:\n'+data.subjects.map(x=>x.name).join('\n')));if(!sub){alert('Subject not found.');return}let start=prompt('Start time (HH:MM)','09:00'),end=prompt('End time (HH:MM)','10:00'),category=prompt('Class type','Lecture');data.weekly.push({day,start,end,subjectId:sub.id,category,title:sub.name});save();render()}
+function addHoliday(){let name=prompt('Holiday name');if(!name)return;let start=prompt('Start date YYYY-MM-DD',todayISO());let end=prompt('End date YYYY-MM-DD (same date for one day)',start);data.holidays.push({id:uid(),name,start,end});data.sessions=data.sessions.filter(s=>!(s.date>=start&&s.date<=end&&!s.status));save();render()}
+function exportBackup(){let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='vitals-backup-'+todayISO()+'.json';a.click();URL.revokeObjectURL(a.href)}
+function undoImport(id){let b=data.imports.find(x=>x.id===id);if(!b||!confirm('Undo this import? Already marked sessions will be kept.'))return;data.sessions=data.sessions.filter(s=>s.importId!==id||!!s.status);data.imports=data.imports.filter(x=>x.id!==id);save();render()}
+function parseCSV(text){text=text.replace(/^\uFEFF/,'');let rows=[],row=[],cell='',q=false;for(let i=0;i<text.length;i++){let c=text[i];if(c==='"'&&q&&text[i+1]==='"'){cell+='"';i++}else if(c==='"')q=!q;else if(c===','&&!q){row.push(cell);cell=''}else if((c==='\n'||c==='\r')&&!q){if(c==='\r'&&text[i+1]==='\n')i++;row.push(cell);if(row.some(x=>x.trim()))rows.push(row);row=[];cell=''}else cell+=c}row.push(cell);if(row.some(x=>x.trim()))rows.push(row);let headers=rows.shift().map(x=>x.trim().toLowerCase());return rows.map(r=>Object.fromEntries(headers.map((h,i)=>[h,(r[i]||'').trim()])))}
+function importCSV(file){
+ let reader=new FileReader();reader.onload=()=>{
+  let raw=parseCSV(reader.result),prepared=[],issues=[],duplicates=0;
+  const val=(r,...keys)=>{for(const k of keys){if(r[k]!==undefined&&r[k]!=='')return r[k]}return ''};
+  raw.forEach((r,i)=>{
+   let date=val(r,'date','start date','startdate');
+   if(/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(date)){let [d,m,y]=date.split('/');date=`${y}-${m.padStart(2,'0')}-${d.padStart(2,'0')}`}
+   let subjectName=val(r,'subject','sub'),type=val(r,'type','category')||'Lecture',time=val(r,'time');
+   let tm=time.match(/(\d{1,2}:\d{2}\s*[AP]M?)\s*[-–]\s*(\d{1,2}:\d{2}\s*[AP]M?)/i);
+   let start=tm?to24(tm[1]):to24(val(r,'start','start time')||'09:00'),finish=tm?to24(tm[2]):to24(val(r,'end','end time')||'10:00');
+   let subj=data.subjects.find(x=>x.name.toLowerCase()===subjectName.toLowerCase()||x.abbr.toLowerCase()===subjectName.toLowerCase());
+   let day=val(r,'day');
+   let dateObj=/^\d{4}-\d{2}-\d{2}$/.test(date)?new Date(date+'T12:00:00'):null;
+   let dateDay=dateObj?dateObj.toLocaleDateString('en-IN',{weekday:'long'}):'';
+   let problem='';if(!dateObj)problem='Date missing or invalid';else if(!subjectName)problem='Subject missing';else if(day&&dateDay.toLowerCase()!==day.toLowerCase())problem=`Day/date mismatch: ${day} listed, ${dateDay} is correct`;
+   if(!problem&&data.sessions.some(x=>x.date===date&&x.start===start&&x.subjectId===subj?.id&&x.category===type)){duplicates++;problem='Possible duplicate already in Vitals'}
+   prepared.push({row:i+2,date,day:day||dateDay,subjectName,type,start,end:finish,topic:val(r,'topic','title'),staff:val(r,'staff','faculty','teacher'),rollNumbers:val(r,'roll numbers','rollnumbers'),problem,subjectId:subj?.id||''});
+   if(problem)issues.push(`Row ${i+2}: ${problem}`);
+  });
+  let valid=prepared.filter(x=>!x.problem);
+  let sample=prepared.slice(0,5).map(x=>`${x.date||'—'} | ${x.start}-${x.end} | ${x.subjectName||'No subject'} | ${x.type}${x.problem?' ⚠ '+x.problem:''}`).join('\n');
+  let summary=`File: ${file.name}\nRows detected: ${prepared.length}\nReady to import: ${valid.length}\nNeeds checking: ${prepared.length-valid.length}\nPossible duplicates: ${duplicates}\n\nFirst rows:\n${sample}${prepared.length>5?'\n…':''}`;
+  if(!valid.length){alert(summary+'\n\nNothing was imported. Please correct the source file and try again.');return}
+  if(!confirm(summary+'\n\nImport only the rows without warnings?'))return;
+  let batch={id:uid(),filename:file.name,date:new Date().toLocaleString(),count:0};
+  valid.forEach(x=>{let sub=data.subjects.find(s=>s.id===x.subjectId);if(!sub){sub={id:uid(),name:x.subjectName,abbr:x.subjectName.split(/\s+/).map(v=>v[0]).join('').toUpperCase().slice(0,5),categories:[]};data.subjects.push(sub)}if(!sub.categories.some(c=>c.name.toLowerCase()===x.type.toLowerCase()))sub.categories.push({name:x.type,required:75});data.sessions.push({id:uid(),date:x.date,start:x.start,end:x.end,subjectId:sub.id,category:x.type,title:x.topic||x.subjectName,topic:x.topic,staff:x.staff,rollNumbers:x.rollNumbers,status:'',source:'import',importId:batch.id});batch.count++});
+  data.imports.unshift(batch);save();alert(`Imported ${batch.count} sessions. ${prepared.length-valid.length} rows were skipped for review.`);render();
+ };reader.readAsText(file)
+}
+function to24(t){let m=t.trim().match(/(\d{1,2}):(\d{2})\s*(AM|PM)?/i);if(!m)return t;let h=+m[1],ap=(m[3]||'').toUpperCase();if(ap==='PM'&&h<12)h+=12;if(ap==='AM'&&h===12)h=0;return String(h).padStart(2,'0')+':'+m[2]}
+$('#csvFile').addEventListener('change',e=>{if(e.target.files[0])importCSV(e.target.files[0]);e.target.value=''});
+$('#backupFile').addEventListener('change',e=>{let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let incoming=JSON.parse(r.result);if(confirm('Restore this backup? Current data will be replaced.')){data=incoming;save();render()}}catch(err){alert('This backup file could not be read.')}};r.readAsText(f);e.target.value=''});
+$('#quickTheme').onclick=()=>{let order=['spring','summer','autumn','ocean','winter'];data.settings.theme=order[(order.indexOf(data.settings.theme)+1)%order.length];save();render()};
+if('serviceWorker'in navigator&&location.protocol.startsWith('http'))window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+if(['overview','calendar','attendance','settings'].includes(location.hash.slice(1)))tab=location.hash.slice(1);ensureRange(todayISO(),todayISO());render();
+</script>
+</body></html>
